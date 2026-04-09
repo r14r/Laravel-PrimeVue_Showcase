@@ -40,32 +40,32 @@
         "build:llmdocs": "node ./scripts/build-llm-docs.mjs"
     },
     "dependencies": {
-        "@docsearch/js": "catalog:app",
-        "@primeuix/themes": "catalog:",
-        "@primevue/core": "workspace:*",
-        "@primevue/forms": "workspace:*",
-        "@primevue/nuxt-module": "workspace:*",
-        "primeicons": "catalog:",
-        "primevue": "workspace:*",
-        "chart.js": "catalog:app",
-        "quill": "catalog:app",
+        "@docsearch/js": "^3.6.0",
+        "@primeuix/themes": "^1.0.0",
+        "@primevue/core": "^4.5.4",
+        "@primevue/forms": "^4.5.4",
+        "primeicons": "^7.0.0",
+        "primevue": "^4.5.4",
+        "chart.js": "^4.4.1",
+        "quill": "^2.0.2",
         "superstruct": "^2.0.2",
         "valibot": "^1.2.0",
         "yup": "1.4.0",
         "zod": "3.23.8"
     },
     "devDependencies": {
+        "@primevue/nuxt-module": "^4.5.4",
         "@stackblitz/sdk": "^1.8.2",
-        "autoprefixer": "^10",
+        "autoprefixer": "^10.4.17",
         "jsdom": "^19.0.0",
-        "nuxt": "catalog:app",
+        "nuxt": "^3.21.2",
         "postcss": "^8.4.31",
-        "sass": "catalog:app",
-        "sass-loader": "catalog:app",
-        "tailwindcss": "^3",
-        "tailwindcss-primeui": "catalog:",
+        "sass": "^1.77.0",
+        "sass-loader": "^14.1.1",
+        "tailwindcss": "^3.4.3",
+        "tailwindcss-primeui": "^0.3.0",
         "typedoc": "0.23.23",
-        "vite": "catalog:app"
+        "vite": "^5.4.21"
     },
     "engines": {
         "node": ">=12.11.0"
