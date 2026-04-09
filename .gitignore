@@ -2,3 +2,8 @@
 .envrc
 .set_env.sh
 
+# Nuxt app generated/installed directories
+app.nuxt/node_modules/
+app.nuxt/.nuxt/
+app.nuxt/package-lock.json
+
