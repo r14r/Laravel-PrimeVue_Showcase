@@ -1,7 +1,7 @@
 import 'primeicons/primeicons.css';
 import { createApp, reactive } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
-import { createHead } from '@unhead/vue';
+import { createHead } from '@unhead/vue/client';
 import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
