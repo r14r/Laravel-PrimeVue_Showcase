@@ -325,8 +325,22 @@
 
 <script>
 import EventBus from '@/app/AppEventBus';
+import CardsApp from '@/components/landing/samples/CardsApp.vue';
+import ChatApp from '@/components/landing/samples/ChatApp.vue';
+import CustomersApp from '@/components/landing/samples/CustomersApp.vue';
+import InboxApp from '@/components/landing/samples/InboxApp.vue';
+import MoviesApp from '@/components/landing/samples/MoviesApp.vue';
+import OverviewApp from '@/components/landing/samples/OverviewApp.vue';
 
 export default {
+    components: {
+        CardsApp,
+        ChatApp,
+        CustomersApp,
+        InboxApp,
+        MoviesApp,
+        OverviewApp
+    },
     data() {
         return {
             lineChartData: {},
