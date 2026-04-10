@@ -2,8 +2,19 @@
 .envrc
 .set_env.sh
 
-# Nuxt app generated/installed directories
-app.nuxt/node_modules/
-app.nuxt/.nuxt/
-app.nuxt/package-lock.json
+/node_modules
+/public/build
+/public/hot
+/storage/*.key
+/storage/app/private
+/vendor
 
+/dist
+
+.env
+.env.backup
+.env.production
+.phpunit.result.cache
+
+npm-debug.log
+yarn-error.log
