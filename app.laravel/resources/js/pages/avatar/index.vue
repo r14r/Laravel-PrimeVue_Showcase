@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import AccessibilityDoc from '@/doc/avatar/AccessibilityDoc';
+import AccessibilityDoc from '@/doc/avatar/AccessibilityDoc.vue';
 import AvatarGroupDoc from '@/doc/avatar/AvatarGroupDoc.vue';
 import IconDoc from '@/doc/avatar/IconDoc.vue';
 import ImageDoc from '@/doc/avatar/ImageDoc.vue';
