@@ -1,5 +1,3 @@
-import { isClient } from '@primeuix/utils/dom';
-
 const CodeHighlight = {
     mounted(el, binding) {
         const modifiers = binding.modifiers;
@@ -9,7 +7,7 @@ const CodeHighlight = {
         else if (modifiers.css || value === 'css') el.className = 'language-css';
         else el.className = 'language-markup';
 
-        if (isClient()) {
+        if (typeof window !== 'undefined') {
             window.Prism.highlightElement(el.children[0]);
             el.children[0].parentElement.setAttribute('tabindex', '-1');
         }
