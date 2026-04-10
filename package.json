@@ -8,6 +8,7 @@
     },
     "dependencies": {
         "@primeuix/themes": "^2.0.3",
+        "@primeuix/utils": "^0.6.4",
         "@primevue/core": "^4.5.5",
         "@primevue/forms": "^4.5.5",
         "@unhead/vue": "^3.0.2",
