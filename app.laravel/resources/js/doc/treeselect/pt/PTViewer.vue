@@ -6,7 +6,7 @@
 
 <script>
 import { getPTOptions } from '@/components/doc/helpers';
-import { NodeService } from '/service/NodeService';
+import { NodeService } from '@/service/NodeService';
 
 export default {
     data() {

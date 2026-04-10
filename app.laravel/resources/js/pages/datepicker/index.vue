@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import AccessibilityDoc from '@/doc/datepicker/AccessibilityDoc';
+import AccessibilityDoc from '@/doc/datepicker/AccessibilityDoc.vue';
 import BasicDoc from '@/doc/datepicker/BasicDoc.vue';
 import ButtonBarDoc from '@/doc/datepicker/ButtonBarDoc.vue';
 import ClearIconDoc from '@/doc/datepicker/ClearIconDoc.vue';

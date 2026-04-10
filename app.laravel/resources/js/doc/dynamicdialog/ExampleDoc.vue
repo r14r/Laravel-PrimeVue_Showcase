@@ -12,8 +12,8 @@
 
 <script>
 import { markRaw } from 'vue';
-import FooterDemo from './demo/FooterDemo';
-import ProductListDemo from './demo/ProductListDemo';
+import FooterDemo from './demo/FooterDemo.vue';
+import ProductListDemo from './demo/ProductListDemo.vue';
 
 export default {
     data() {

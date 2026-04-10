@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@config "../../tailwind.config.js";
-
 @import './flags.css';
 @import './layout/layout.scss';
+
+@config "../../tailwind.config.js";

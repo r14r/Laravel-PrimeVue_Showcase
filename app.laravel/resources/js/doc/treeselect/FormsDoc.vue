@@ -17,7 +17,7 @@
 <script>
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { z } from 'zod';
-import { NodeService } from '/service/NodeService';
+import { NodeService } from '@/service/NodeService';
 
 export default {
     data() {
@@ -57,7 +57,7 @@ export default {
 <script>
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { z } from 'zod';
-import { NodeService } from '/service/NodeService';
+import { NodeService } from '@/service/NodeService';
 
 export default {
     data() {
@@ -102,7 +102,7 @@ import { ref } from 'vue';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
 import { useToast } from "primevue/usetoast";
 import { z } from 'zod';
-import { NodeService } from '/service/NodeService';
+import { NodeService } from '@/service/NodeService';
 
 const toast = useToast();
 const initialValues = ref({

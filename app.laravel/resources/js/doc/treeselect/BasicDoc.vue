@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { NodeService } from '/service/NodeService';
+import { NodeService } from '@/service/NodeService';
 
 export default {
     data() {
