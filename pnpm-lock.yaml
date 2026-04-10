@@ -11,6 +11,12 @@ importers:
       '@primeuix/themes':
         specifier: ^2.0.3
         version: 2.0.3
+      '@primeuix/utils':
+        specifier: ^0.6.4
+        version: 0.6.4
+      '@primevue/core':
+        specifier: ^4.5.5
+        version: 4.5.5(vue@3.5.32)
       '@primevue/forms':
         specifier: ^4.5.5
         version: 4.5.5(vue@3.5.32)
@@ -35,6 +41,9 @@ importers:
       vue-router:
         specifier: ^5.0.4
         version: 5.0.4(@vue/compiler-sfc@3.5.32)(vue@3.5.32)
+      zod:
+        specifier: 3.23.8
+        version: 3.23.8
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4.2.2
@@ -1171,6 +1180,9 @@ packages:
     resolution: {integrity: sha512-4LCcse/U2MHZ63HAJVE+v71o7yOdIe4cZ70Wpf8D/IyjDKYQLV5GD46B+hSTjJsvV5PztjvHoU580EftxjDZFQ==}
     engines: {node: '>=12.20'}
 
+  zod@3.23.8:
+    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
+
 snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
@@ -2137,3 +2149,5 @@ snapshots:
   yaml@2.8.3: {}
 
   yocto-queue@1.2.2: {}
+
+  zod@3.23.8: {}
