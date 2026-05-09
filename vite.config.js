@@ -11,6 +11,15 @@ export default defineConfig({
         }),
         vue()
     ],
+    server: {
+        cors: true,
+        host: '0.0.0.0',
+        hmr: {
+            host: 'localhost',
+            port: 5173,
+            protocol: 'http'
+        }
+    },
     resolve: {
         alias: {
             '@': path.resolve(__dirname, 'resources/js')
