@@ -2,7 +2,7 @@
     <div :ref="containerRef" class="layout-topbar">
         <div class="layout-topbar-inner">
             <div class="layout-topbar-logo-container">
-                <PrimeVueNuxtLink to="/" class="layout-topbar-logo" aria-label="PrimeVue logo">
+                <RouterLink to="/" class="layout-topbar-logo" aria-label="PrimeVue logo">
                     <svg width="165" height="40" viewBox="0 0 165 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             fill-rule="evenodd"
@@ -45,8 +45,8 @@
                         <path d="M12.1 18.2L12.6 17.4L14.3 18.2H20.3L21.6 17.4L22.2 18.2L17.15 26.8L12.1 18.2Z" fill="var(--high-contrast-text-color)" />
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M12.0297 0L17.1214 13.1536L22.5526 0H12.0297Z" fill="var(--logo-color)" />
                     </svg>
-                </PrimeVueNuxtLink>
-                <PrimeVueNuxtLink to="/" class="layout-topbar-icon" aria-label="PrimeVue logo">
+                </RouterLink>
+                <RouterLink to="/" class="layout-topbar-icon" aria-label="PrimeVue logo">
                     <svg width="35" height="40" viewBox="0 0 35 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M25.87 18.05L23.16 17.45L25.27 20.46V29.78L32.49 23.76V13.53L29.18 14.73L25.87 18.04V18.05ZM25.27 35.49L29.18 31.58V27.67L25.27 30.98V35.49ZM20.16 17.14H20.03H20.17H20.16ZM30.1 5.19L34.89 4.81L33.08 12.33L24.1 15.67L30.08 5.2L30.1 5.19ZM5.72 14.74L2.41 13.54V23.77L9.63 29.79V20.47L11.74 17.46L9.03 18.06L5.72 14.75V14.74ZM9.63 30.98L5.72 27.67V31.58L9.63 35.49V30.98ZM4.8 5.2L10.78 15.67L1.81 12.33L0 4.81L4.79 5.19L4.8 5.2ZM24.37 21.05V34.59L22.56 37.29L20.46 39.4H14.44L12.34 37.29L10.53 34.59V21.05L12.42 18.23L17.45 26.8L22.48 18.23L24.37 21.05ZM22.85 0L22.57 0.69L17.45 13.08L12.33 0.69L12.05 0H22.85Z"
@@ -57,13 +57,10 @@
                             fill="var(--high-contrast-text-color)"
                         />
                     </svg>
-                </PrimeVueNuxtLink>
+                </RouterLink>
             </div>
 
             <ul class="topbar-items">
-                <li>
-                    <div id="docsearch"></div>
-                </li>
                 <li>
                     <a href="https://github.com/primefaces/primevue" target="_blank" rel="noopener noreferrer" class="topbar-item">
                         <i class="pi pi-github"></i>
@@ -137,89 +134,95 @@
 
 <script>
 import EventBus from '@/app/AppEventBus';
-import docsearch from '@docsearch/js';
+import AppConfigurator from '@/components/layout/AppConfigurator.vue';
+
+import StyleClass from 'primevue/styleclass';
 
 export default {
+    name: 'AppTopBar',
+
     emits: ['menubutton-click'],
-    outsideClickListener: null,
+
+    directives: {
+        styleclass: StyleClass
+    },
+
+    components: {
+        AppConfigurator
+    },
+
     props: {
         showMenuButton: {
             type: Boolean,
             default: true
         }
     },
+
     data() {
         return {
             versions: [
                 {
                     name: 'v4',
+                    version: '4',
                     url: 'https://primevue.org'
                 },
                 {
                     name: 'v3',
+                    version: '3',
                     url: 'https://v3.primevue.org'
                 }
-            ]
+            ],
+            scrollListener: null,
+            outsideClickListener: null,
+            container: null
         };
     },
-    scrollListener: null,
-    container: null,
+
     mounted() {
         this.bindScrollListener();
-
-        docsearch({
-            container: '#docsearch',
-            appId: '01CMUF4W4R',
-            indexName: 'primevue',
-            apiKey: '9bb5939e36897b26ff7de5b7b64d6c43',
-            transformItems: (items) => {
-                const isLocalhost = process.env.NODE_ENV !== 'production';
-
-                return items.map((item) => {
-                    if (isLocalhost) {
-                        const url = new URL(item.url);
-
-                        url.protocol = window.location.protocol;
-                        url.hostname = window.location.hostname;
-                        url.port = window.location.port;
-                        item.url = url.toString();
-                    }
-
-                    return item;
-                });
-            }
-        });
     },
+
     beforeUnmount() {
-        if (this.scrollListener) {
-            this.unbindScrollListener();
-        }
+        this.unbindScrollListener();
+        this.unbindOutsideClickListener();
     },
+
     methods: {
         onMenuButtonClick(event) {
             this.$emit('menubutton-click', event);
         },
+
         toggleDarkMode() {
-            EventBus.emit('dark-mode-toggle', { dark: !this.$appState.darkTheme });
+            EventBus.emit('dark-mode-toggle', {
+                dark: !this.$appState.darkTheme
+            });
         },
+
         bindScrollListener() {
             if (!this.scrollListener) {
-                if (this.container) {
-                    this.scrollListener = () => {
-                        if (window.scrollY > 0) this.container.classList.add('layout-topbar-sticky');
-                        else this.container.classList.remove('layout-topbar-sticky');
-                    };
-                }
-            }
+                this.scrollListener = () => {
+                    if (!this.container) {
+                        return;
+                    }
 
-            window.addEventListener('scroll', this.scrollListener);
+                    if (window.scrollY > 0) {
+                        this.container.classList.add('layout-topbar-sticky');
+                    } else {
+                        this.container.classList.remove('layout-topbar-sticky');
+                    }
+                };
+
+                window.addEventListener('scroll', this.scrollListener);
+            }
         },
+
         unbindScrollListener() {
             if (this.scrollListener) {
                 window.removeEventListener('scroll', this.scrollListener);
                 this.scrollListener = null;
             }
         },
+
         bindOutsideClickListener() {
             if (!this.outsideClickListener) {
                 this.outsideClickListener = (event) => {
@@ -231,18 +234,28 @@ export default {
                 document.addEventListener('click', this.outsideClickListener);
             }
         },
+
         unbindOutsideClickListener() {
             if (this.outsideClickListener) {
                 document.removeEventListener('click', this.outsideClickListener);
                 this.outsideClickListener = null;
             }
         },
+
         isOutsideTopbarMenuClicked(event) {
-            return !(this.$refs.topbarMenu.isSameNode(event.target) || this.$refs.topbarMenu.contains(event.target));
+            const topbarMenu = this.$refs.topbarMenu;
+
+            if (!topbarMenu) {
+                return true;
+            }
+
+            return !(topbarMenu.isSameNode(event.target) || topbarMenu.contains(event.target));
         },
+
         containerRef(el) {
             this.container = el;
         },
+
         toggleDesigner() {
             this.$appState.designer.active = !this.$appState.designer.active;
         }

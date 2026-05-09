@@ -10,4 +10,4 @@ Route::get('/llms/{path}', [LlmsController::class, 'serve'])
 // Serve the Vue SPA for all other routes
 Route::get('/{any}', function () {
     return view('app');
-})->where('any', '.*');
+})->where('any', '^(?!api).*$');

@@ -23,6 +23,15 @@
 <script>
 import { blockBodyScroll, unblockBodyScroll } from '@primeuix/utils/dom';
 
+import Toast from 'primevue/toast';
+
+import AppTopBar from '@/components/layout/AppTopBar.vue';
+import AppMenu from '@/components/layout/AppMenu.vue';
+import AppFooter from '@/components/layout/AppFooter.vue';  
+import AppDesigner from '@/components/layout/AppDesigner.vue';
+import AppNews from '@/components/layout/AppNews.vue';
+
+
 export default {
     data() {
         return {
@@ -67,6 +76,14 @@ export default {
                 }
             ];
         }
+    },
+    components: {
+        AppTopBar,
+        AppMenu,
+        AppFooter,
+        AppDesigner,
+        AppNews,
+        Toast
     }
 };
 </script>

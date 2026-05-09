@@ -36,14 +36,24 @@
 import EventBus from '@/app/AppEventBus';
 import { $dt, usePreset } from '@primeuix/themes';
 
-export default {
-    setup() {
-        const runtimeConfig = useRuntimeConfig();
+import Drawer from 'primevue/drawer';
+import ConfirmDialog from 'primevue/confirmdialog';
 
-        return {
-            designerApiUrl: runtimeConfig.public.designerApiUrl
-        };
+import DesignDashboard    from '@/components/layout/designer/dashboard/DesignDashboard.vue';
+import DesignCreateTheme  from '@/components/layout/designer/create/DesignCreateTheme.vue';
+import DesignEditor       from '@/components/layout/designer/editor/DesignEditor.vue';
+import DesignEditorFooter from '@/components/layout/designer/editor/DesignEditorFooter.vue';
+
+export default {
+    components: {
+        Drawer,
+        ConfirmDialog,
+        DesignDashboard,
+        DesignCreateTheme,
+        DesignEditor,
+        DesignEditorFooter
     },
+
     provide() {
         return {
             designerService: {
@@ -58,16 +68,46 @@ export default {
             }
         };
     },
+
     data() {
         return {
+            designerApiUrl: import.meta.env.VITE_DESIGNER_API_URL || '/api/designer',
             deferredTabs: true
         };
     },
-    async mounted() {
-        const { data, error } = await $fetch(this.designerApiUrl + '/license/restore', {
-            credentials: 'include'
-        });
 
+    async mounted() {
+        var error=null, data=null;
+
+        try {
+        const response = await fetch(this.designerApiUrl + '/license/restore', {
+                credentials: 'include',
+                headers: {
+                    Accept: 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            data = await response.json();
+        } catch (err) {
+            error = err;
+                
+            console.log('License error:', error);
+
+            this.$toast.add({
+                severity: 'error',
+                summary: 'An Error Occurred',
+                detail: data.message || 'License restore failed',
+                life: 3000
+            });
+
+            return;
+        }
+
+        
         if (error) {
             this.$toast.add({ severity: 'error', summary: 'An Error Occurred', detail: error.message, life: 3000 });
         } else {

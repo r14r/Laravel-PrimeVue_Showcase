@@ -493,48 +493,99 @@
 </template>
 
 <script>
+import Avatar from 'primevue/avatar';
+import AvatarGroup from 'primevue/avatargroup';
+import OverlayBadge from 'primevue/overlaybadge';
+import Button from 'primevue/button';
+import SelectButton from 'primevue/selectbutton';
+import Divider from 'primevue/divider';
+import ToggleSwitch from 'primevue/toggleswitch';
+import Tag from 'primevue/tag';
+import FileUpload from 'primevue/fileupload';
+import InputText from 'primevue/inputtext';
+import AutoComplete from 'primevue/autocomplete';
+import Badge from 'primevue/badge';
+import RadioButton from 'primevue/radiobutton';
+import Select from 'primevue/select';
+import InputOtp from 'primevue/inputotp';
+import Slider from 'primevue/slider';
+import InputNumber from 'primevue/inputnumber';
+import Checkbox from 'primevue/checkbox';
+
 export default {
     name: 'Cards',
-    redrawListener: null,
+
+    components: {
+        Avatar,
+        AvatarGroup,
+        OverlayBadge,
+        Button,
+        SelectButton,
+        Divider,
+        ToggleSwitch,
+        Tag,
+        FileUpload,
+        InputText,
+        AutoComplete,
+        Badge,
+        RadioButton,
+        Select,
+        InputOtp,
+        Slider,
+        InputNumber,
+        Checkbox
+    },
+
     data() {
         return {
+            items: [],
             files: [],
             totalSize: 0,
             totalSizePercent: 0,
+
             jobApplication: false,
+
             userProfiles: 'Chilling',
             userProfilesOptions: ['Chilling', 'Do Not Disturb'],
             userProfilesValues: [true, true, false, false, true, false],
+
             forgotPasswordOTP: '023',
             priceRange: [0, 10000],
-            priceMinVal: 0,
-            priceMaxVal: 100000,
-            priceRangePopularSpecs: [
-                { value: 'Furnished', checked: true },
-                { value: 'Unfurnished', checked: false },
-                { value: 'Detached', checked: true },
-                { value: 'Underfloor heating', checked: false },
-                { value: 'Balcony', checked: true },
-                { value: 'Duplex', checked: false },
-                { value: 'Triplex', checked: false },
-                { value: 'Garden', checked: false },
-                { value: 'Central location', checked: false },
-                { value: 'Sea view', checked: true }
-            ],
             priceRangePopularSpecsChecked: ['Furnished', 'Detached', 'Balcony', 'Sea view'],
+            priceRangePopularSpecs: [
+                { value: 'Furnished' },
+                { value: 'Unfurnished' },
+                { value: 'Detached' },
+                { value: 'Underfloor heating' },
+                { value: 'Balcony' },
+                { value: 'Duplex' },
+                { value: 'Triplex' },
+                { value: 'Garden' },
+                { value: 'Central location' },
+                { value: 'Sea view' }
+            ],
+
             userSelectButtonOptions: ['Joined', 'Hosted'],
             selectedUserSelectButtonOption: 'Joined',
+
             darkMode: false,
             emailChips: [],
-            memberSelectedTypes: ['O', 'E', 'V'],
+
             memberTypes: [
                 { name: 'Owner', code: 'O' },
                 { name: 'Editor', code: 'E' },
                 { name: 'Viewer', code: 'V' }
             ],
+            memberSelectedTypes: [
+                { name: 'Owner', code: 'O' },
+                { name: 'Editor', code: 'E' },
+                { name: 'Viewer', code: 'V' }
+            ],
+
             copiedText: 'https://www.example.com/shared-files/user123/document-collection/file12345',
             documentName: 'Aura Theme',
             filesTag: ['ui', 'redesign', 'dashboard'],
+
             selectedPermission: 'Everyone',
             permissions: [
                 { name: 'Everyone', icon: 'pi pi-globe', key: 'E' },
@@ -542,36 +593,48 @@ export default {
             ]
         };
     },
+
     methods: {
         onRemoveTemplatingFile(file, removeFileCallback, index) {
             removeFileCallback(index);
-            this.totalSize -= parseInt(this.formatSize(file.size));
-            this.totalSizePercent = this.totalSize / 10;
+            this.totalSize = Math.max(0, this.totalSize - file.size);
+            this.totalSizePercent = Math.min(100, this.totalSize / 10000);
         },
-        onClearTemplatingUpload(clear) {
-            clear();
+
+        onClearTemplatingUpload(clearCallback) {
+            clearCallback();
+            this.files = [];
             this.totalSize = 0;
             this.totalSizePercent = 0;
         },
+
         onSelectedFiles(event) {
-            this.files = event.files;
-            this.files.forEach((file) => {
-                this.totalSize += parseInt(this.formatSize(file.size));
+            this.files = event.files || [];
+            this.totalSize = this.files.reduce((sum, file) => sum + file.size, 0);
+            this.totalSizePercent = Math.min(100, this.totalSize / 10000);
+        },
+
+        uploadEvent(uploadCallback) {
+            this.totalSizePercent = Math.min(100, this.totalSize / 10000);
+            uploadCallback();
+        },
+
+        onTemplatedUpload() {
+            this.$toast?.add({
+                severity: 'info',
+                summary: 'Success',
+                detail: 'File Uploaded',
+                life: 3000
             });
         },
-        uploadEvent(callback) {
-            this.totalSizePercent = this.totalSize / 10;
-            callback();
-        },
-        onTemplatedUpload() {
-            this.$toast.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded', life: 3000 });
-        },
+
         formatSize(bytes) {
             const k = 1024;
-            const dm = 3;
-            const sizes = this.$primevue.config.locale.fileSizeTypes;
+            const dm = 2;
+            const fallbackSizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+            const sizes = this.$primevue?.config?.locale?.fileSizeTypes || fallbackSizes;
 
-            if (bytes === 0) {
+            if (!bytes) {
                 return `0 ${sizes[0]}`;
             }
 
@@ -580,10 +643,10 @@ export default {
 
             return `${formattedSize} ${sizes[i]}`;
         },
+
         search(event) {
-            this.items = [...Array(10).keys()].map((item) => event.query + '-' + item);
+            this.items = Array.from({ length: 10 }, (_, index) => `${event.query}-${index}`);
         }
-    },
-    components: {}
+    }
 };
 </script>

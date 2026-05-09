@@ -1,17 +1,5 @@
 <template>
-    <section class="landing-hero py-20 px-8 lg:px-20">
-        <div class="flex flex-col items-center">
-            <div class="flex items-center gap-4">
-                <PrimeVueNuxtLink to="/setup" class="linkbox linkbox-primary" @click="onGetStartedClick">
-                    <span>Get Started </span>
-                    <i class="pi pi-arrow-right ms-4"></i>
-                </PrimeVueNuxtLink>
-                <a href="https://github.com/primefaces/primevue" target="_blank" rel="noopener noreferrer" class="linkbox">
-                    <span>Give a Star</span>
-                    <i class="pi pi-star-fill ms-4 text-yellow-500"></i>
-                </a>
-            </div>
-        </div>
+    <section class="landing-hero py-0 px-8 lg:px-20">
         <div class="w-full flex lg:hidden items-center justify-center mt-16 mb-4">
             <SelectButton v-model="selectedSampleOption" :options="sampleOptions" optionLabel="title" class="dark:border dark:border-white/20">
                 <template #option="slotProps">
@@ -21,6 +9,17 @@
             </SelectButton>
         </div>
         <div class="bg-surface-0 border border-black/10 dark:border-white/20 dark:bg-surface-950 w-full rounded-3xl p-0 flex lg:hidden items-start gap-6 overflow-hidden">
+            <div class="flex items-center gap-4">
+                <RouterLink to="/setup" class="linkbox linkbox-primary" @click="onGetStartedClick">
+                    <span>Get Started </span>
+                    <i class="pi pi-arrow-right ms-4"></i>
+                </RouterLink>
+                <a href="https://github.com/primefaces/primevue" target="_blank" rel="noopener noreferrer" class="linkbox">
+                    <span>Give a Star</span>
+                    <i class="pi pi-star-fill ms-4 text-yellow-500"></i>
+                </a>
+            </div>
+
             <template v-for="sampleOption of sampleOptions" :key="sampleOption.title">
                 <img v-if="selectedSampleOption.title === sampleOption.title" :src="sampleOption.src + (isDark() ? '-dark.jpg' : '.jpg')" class="w-full" />
             </template>
@@ -259,9 +258,14 @@
                             <div v-for="(data, i) of opportunities" :key="i" class="flex flex-col p-3 rounded-xl bg-emphasis">
                                 <div class="flex items-start justify-between gap-2">
                                     <div class="font-medium text-color mt-0.5">{{ data.title }}</div>
-                                    <NuxtLink :to="data.link" target="_blank" rel="noopener">
-                                        <Button icon="pi pi-arrow-up-right text-sm !leading-none" class="w-8 h-8 !border-surface !bg-surface-0 dark:!bg-surface-900" severity="secondary" text />
-                                    </NuxtLink>
+            <a :href="data.link" target="_blank" rel="noopener noreferrer">
+                <Button
+                    icon="pi pi-arrow-up-right text-sm !leading-none"
+                    class="w-8 h-8 !border-surface !bg-surface-0 dark:!bg-surface-900"
+                    severity="secondary"
+                    text
+                />
+            </a>
                                 </div>
                                 <img class="w-full rounded-lg mt-2 block" :src="data.image" alt="Opportunutiy Image" />
                                 <div class="flex-1 mt-2 p-2 rounded-lg bg-surface-0 dark:bg-surface-900 text-xs text-color">
@@ -321,6 +325,7 @@
 
 <script>
 import EventBus from '@/app/AppEventBus';
+
 import CardsApp from '@/components/landing/samples/CardsApp.vue';
 import ChatApp from '@/components/landing/samples/ChatApp.vue';
 import CustomersApp from '@/components/landing/samples/CustomersApp.vue';
@@ -328,21 +333,51 @@ import InboxApp from '@/components/landing/samples/InboxApp.vue';
 import MoviesApp from '@/components/landing/samples/MoviesApp.vue';
 import OverviewApp from '@/components/landing/samples/OverviewApp.vue';
 
+import SelectButton from 'primevue/selectbutton';
+import Divider from 'primevue/divider';
+import Avatar from 'primevue/avatar';
+import Drawer from 'primevue/drawer';
+import Button from 'primevue/button';
+import OverlayBadge from 'primevue/overlaybadge';
+import ToggleSwitch from 'primevue/toggleswitch';
+import Knob from 'primevue/knob';
+import Chart from 'primevue/chart';
+
+import Tooltip from 'primevue/tooltip';
+
 export default {
+    name: 'HeroSection',
+
+    directives: {
+        tooltip: Tooltip
+    },
+
     components: {
         CardsApp,
         ChatApp,
         CustomersApp,
         InboxApp,
         MoviesApp,
-        OverviewApp
+        OverviewApp,
+
+        SelectButton,
+        Divider,
+        Avatar,
+        Drawer,
+        Button,
+        OverlayBadge,
+        ToggleSwitch,
+        Knob,
+        Chart
     },
+
     data() {
         return {
             lineChartData: {},
             lineChartOptions: {},
             chartData: {},
             chartOptions: {},
+
             sampleAppsSidebarNavs: [
                 { icon: 'pi pi-home', title: 'Overview' },
                 { icon: 'pi pi-comment', title: 'Chat' },
@@ -351,74 +386,86 @@ export default {
                 { icon: 'pi pi-user', title: 'Customers' },
                 { icon: 'pi pi-video', title: 'Movies' }
             ],
-            sampleAppsSidebarNavsMore: [{ icon: 'pi pi-cog', title: 'Settings' }],
+
+            sampleAppsSidebarNavsMore: [
+                { icon: 'pi pi-cog', title: 'Settings' }
+            ],
+
             selectedSampleAppsSidebarNav: 'Overview',
             isSlimMenu: true,
             isSlimMenuSelected: false,
+
             sampleOptions: [
-                { icon: 'pi pi-home', title: 'Overview', src: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/sampleshots/overview' },
-                { icon: 'pi pi-comment', title: 'Chat', src: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/sampleshots/chat' },
-                { icon: 'pi pi-inbox', title: 'Inbox', src: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/sampleshots/mail' },
-                { icon: 'pi pi-th-large', title: 'Cards', src: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/sampleshots/cards' },
-                { icon: 'pi pi-user', title: 'Customers', src: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/sampleshots/customers' },
-                { icon: 'pi pi-video', title: 'Movies', src: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/sampleshots/movies' }
+                {
+                    icon: 'pi pi-home',
+                    title: 'Overview',
+                    src: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/sampleshots/overview'
+                },
+                {
+                    icon: 'pi pi-comment',
+                    title: 'Chat',
+                    src: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/sampleshots/chat'
+                },
+                {
+                    icon: 'pi pi-inbox',
+                    title: 'Inbox',
+                    src: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/sampleshots/mail'
+                },
+                {
+                    icon: 'pi pi-th-large',
+                    title: 'Cards',
+                    src: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/sampleshots/cards'
+                },
+                {
+                    icon: 'pi pi-user',
+                    title: 'Customers',
+                    src: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/sampleshots/customers'
+                },
+                {
+                    icon: 'pi pi-video',
+                    title: 'Movies',
+                    src: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/sampleshots/movies'
+                }
             ],
-            selectedSampleOption: { icon: 'pi pi-home', title: 'Overview', src: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/sampleshots/overview' },
+
+            selectedSampleOption: {
+                icon: 'pi pi-home',
+                title: 'Overview',
+                src: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/sampleshots/overview'
+            },
+
             visibleRight: false,
             selectedSidebarOption: 'Statistics',
             sidebarOptions: ['Interaction Logs', 'Preferences', 'Statistics', 'Opportunities'],
+
             callLogs: [
-                { image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar6.png', name: 'Brook Simmons', time: '02.02.2024 | 45 min' },
-                { image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar12.jpg', name: 'Jacob Jones', time: '02.02.2024 | 45 min' },
-                { image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar13.jpg', name: 'Annette Black', time: '02.03.2024 | 13 min' },
-                { image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar9.jpg', name: 'Arlene McCoy', time: '02.03.2024 | 14 min' },
-                { image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar10.jpg', name: 'Arlene Simmons', time: '02.03.2024 | 14 min' },
-                { image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar11.jpg', name: 'Michael Brown', time: '02.04.2024 | 20 min' }
+                {
+                    image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar6.png',
+                    name: 'Brook Simmons',
+                    time: '02.02.2024 | 45 min'
+                },
+                {
+                    image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar12.jpg',
+                    name: 'Jacob Jones',
+                    time: '02.02.2024 | 45 min'
+                },
+                {
+                    image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar13.jpg',
+                    name: 'Annette Black',
+                    time: '02.03.2024 | 13 min'
+                }
             ],
+
             emailRecords: [
                 {
                     image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar2.png',
                     name: 'Brook Simmons',
                     time: '3:24 PM',
                     title: 'Unleash Business Potential',
-                    text: 'Automate, analyze, and accelerate with our SaaS platform. Unshackle from mundane tasks and focus on scaling your business. Contact us for a demo today!'
-                },
-                {
-                    image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar7.png',
-                    name: 'Jacob Jones',
-                    time: '12.23.2023',
-                    title: 'Optimized Workflow Revolution  ',
-                    text: "Experience a workflow revolution with our intuitive SaaS tool. With enhanced features and optimized processes, it's efficiency like never before. Let's get in touch for a brief demo!"
-                },
-                {
-                    image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar8.png',
-                    name: 'Annette Black',
-                    time: '12.17.2023',
-                    title: 'Innovation at Fingertips',
-                    text: 'With our SaaS solution, innovation is only a click away. Shape your future with pioneering features and minimalist design. Join us for your solution walk-through today!'
-                },
-                {
-                    image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar11.jpg',
-                    name: 'Arlene McCoy',
-                    time: '06.17.2023',
-                    title: 'Seamless Integration',
-                    text: 'Integrate effortlessly with our user-friendly SaaS tools. Streamline your operations and boost productivity. Discover more in our demo session.'
-                },
-                {
-                    image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar13.jpg',
-                    name: 'Arlene Simmons',
-                    time: '04.17.2023',
-                    title: 'Transform Your Business',
-                    text: 'Empower your team with our innovative SaaS solutions. Achieve unparalleled efficiency and drive growth. Book a demo to explore the possibilities.'
-                },
-                {
-                    image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/avatar2.png',
-                    name: 'Michael Brown',
-                    time: '01.05.2024',
-                    title: 'Next-Gen Collaboration',
-                    text: 'Experience the future of collaboration with our cutting-edge SaaS platform. Enhance teamwork and streamline communication. Contact us for a demo today!'
+                    text: 'Automate, analyze, and accelerate with our SaaS platform.'
                 }
             ],
+
             preferences: [
                 {
                     title: 'Email',
@@ -435,68 +482,30 @@ export default {
                         { icon: 'pi pi-volume-down', title: 'Voicemail', checked: false },
                         { icon: 'pi pi-comments', title: 'SMS text', checked: false }
                     ]
-                },
-                {
-                    title: 'Social Media',
-                    prefs: [
-                        { icon: 'pi pi-clock', title: 'Automated Post', checked: true },
-                        { icon: 'pi pi-user', title: 'Direct Message', checked: false }
-                    ]
-                },
-                {
-                    title: 'Data Privacy',
-                    prefs: [
-                        { icon: 'pi pi-box', title: 'Share Data with 3rd Parties', checked: true },
-                        { icon: 'pi pi-file', title: 'Cookies', checked: false }
-                    ]
                 }
             ],
+
             opportunities: [
                 {
                     title: 'Apollo',
                     link: 'https://primevue.org/templates/apollo/',
                     image: 'https://primefaces.org/cdn/primevue/images/layouts/apollo-vue.jpg',
-                    text: 'Keep your application fresh with Apollo, the newest and most modern template available.'
+                    text: 'Keep your application fresh with Apollo.'
                 },
                 {
                     title: 'Ultima',
                     link: 'https://primevue.org/templates/ultima/',
                     image: 'https://primefaces.org/cdn/primevue/images/layouts/ultima-vue.jpg',
-                    text: "Elevate your application's intuitiveness with Ultima's premium Material Design interface."
-                },
-                {
-                    title: 'Diamond',
-                    link: 'https://primevue.org/templates/diamond/',
-                    image: 'https://primefaces.org/cdn/primevue/images/layouts/diamond-remastered-vue.jpg',
-                    text: "Handle complex operations with elegance with Diamond's robust and powerful premium design."
-                },
-                {
-                    title: 'Atlantis',
-                    link: 'https://primevue.org/templates/atlantis/',
-                    image: 'https://primefaces.org/cdn/primevue/images/layouts/atlantis-vue.jpg',
-                    text: "Boost your application's capabilities, customization with the Atlantis template."
-                },
-                {
-                    title: 'Verona',
-                    link: 'https://primevue.org/templates/verona/',
-                    image: 'https://primefaces.org/cdn/primevue/images/layouts/verona-vue.jpg',
-                    text: "Achieve sophistication and subtlety with Verona's minimalistic, content-focused design."
-                },
-                {
-                    title: 'Freya',
-                    link: 'https://primevue.org/templates/freya/',
-                    image: 'https://primefaces.org/cdn/primevue/images/layouts/freya-vue.png',
-                    text: "Give your application a sleek, updated look with Freya's chic and modern premium template."
+                    text: 'Elevate your application with Ultima.'
                 }
             ],
+
             customerSatisfaction: 56,
-            churnRisk: 24
+            churnRisk: 24,
+            redrawListener: null
         };
     },
-    beforeUnmount() {
-        EventBus.off('dark-mode-toggle-complete', this.redrawListener);
-        EventBus.off('theme-palette-change', this.redrawListener);
-    },
+
     mounted() {
         this.chartData = this.setChartData();
         this.chartOptions = this.setChartOptions();
@@ -513,20 +522,34 @@ export default {
         EventBus.on('theme-palette-change', this.redrawListener);
         EventBus.on('dark-mode-toggle-complete', this.redrawListener);
     },
+
+    beforeUnmount() {
+        if (this.redrawListener) {
+            EventBus.off('dark-mode-toggle-complete', this.redrawListener);
+            EventBus.off('theme-palette-change', this.redrawListener);
+        }
+    },
+
     methods: {
         setSelectedSampleAppsSidebarNav(title) {
             this.selectedSampleAppsSidebarNav = title;
         },
+
         isDark() {
-            return this.$appState.darkTheme;
+            return this.$appState?.darkTheme ?? false;
         },
+
         toggleSlimMenu() {
             this.isSlimMenu = !this.isSlimMenu;
             this.isSlimMenuSelected = this.isSlimMenu;
         },
+
         onGetStartedClick() {
-            this.$appState.designer.active = false;
+            if (this.$appState?.designer) {
+                this.$appState.designer.active = false;
+            }
         },
+
         setChartData() {
             const documentStyle = getComputedStyle(document.documentElement);
             const borderColor = documentStyle.getPropertyValue('--p-content-border-color');
@@ -546,102 +569,21 @@ export default {
                         },
                         borderSkipped: true,
                         barThickness: 20,
-                        hoverBackgroundColor: hoverBackgroundColor,
-                        hoverTransition: '1s ease all'
+                        hoverBackgroundColor
                     }
                 ]
             };
         },
+
         setChartOptions() {
             const documentStyle = getComputedStyle(document.documentElement);
-            const backgroundColor = documentStyle.getPropertyValue('--p-content-background');
-            const textColor = documentStyle.getPropertyValue('--p-text-color');
             const borderColor = documentStyle.getPropertyValue('--p-content-border-color');
             const textMutedColor = documentStyle.getPropertyValue('--p-text-muted-color');
-
-            const getOrCreateTooltip = (chart) => {
-                let tooltipEl = chart.canvas.parentNode.querySelector('div.chartjs-tooltip');
-
-                if (!tooltipEl) {
-                    tooltipEl = document.createElement('div');
-                    tooltipEl.classList.add('chartjs-tooltip');
-                    tooltipEl.style.backgroundColor = backgroundColor;
-                    tooltipEl.style.boxShadow =
-                        ' 0px 33.12px 9.399px 0px rgba(0, 0, 0, 0.00), 0px 21.036px 8.504px 0px rgba(0, 0, 0, 0.01), 0px 12.084px 7.161px 0px rgba(0, 0, 0, 0.05), 0px 5.371px 5.371px 0px rgba(0, 0, 0, 0.09), 0px 1.343px 2.685px 0px rgba(0, 0, 0, 0.10)';
-                    tooltipEl.style.borderRadius = '7px';
-                    tooltipEl.style.color = textColor;
-                    tooltipEl.style.opacity = 1;
-                    tooltipEl.style.padding = '14.5px';
-                    tooltipEl.style.pointerEvents = 'none';
-                    tooltipEl.style.position = 'absolute';
-                    tooltipEl.style.transform = 'translate(-50%, 0)';
-                    tooltipEl.style.transition = 'all .2s ease';
-                    chart.canvas.parentNode.appendChild(tooltipEl);
-                }
-
-                return tooltipEl;
-            };
 
             return {
                 maintainAspectRatio: false,
                 aspectRatio: 0.8,
                 plugins: {
-                    chartAreaBorder: {
-                        borderColor: 'red',
-                        borderWidth: 2,
-                        borderDash: [5, 5],
-                        borderDashOffset: 2
-                    },
-                    tooltip: {
-                        enabled: false,
-                        padding: 5,
-                        position: 'nearest',
-                        external: function (context) {
-                            // Tooltip Element
-                            const { chart, tooltip } = context;
-                            const tooltipEl = getOrCreateTooltip(chart);
-
-                            // Hide if no tooltip
-                            if (tooltip.opacity === 0) {
-                                tooltipEl.style.opacity = 0;
-
-                                return;
-                            }
-
-                            if (tooltip.body) {
-                                const bodyLines = tooltip.body.map((b) => {
-                                    const strArr = b.lines[0].split(':');
-                                    const data = {
-                                        text: strArr[0].trim(),
-                                        value: strArr[1].trim()
-                                    };
-
-                                    return data;
-                                });
-
-                                // Clear old content
-                                tooltipEl.innerHTML = '';
-                                bodyLines.forEach((body, i) => {
-                                    const text = document.createElement('div');
-
-                                    text.appendChild(document.createTextNode('$' + body.value + 'K'));
-                                    text.style.fontWeight = '500';
-                                    text.style.lineHeight = '21px';
-                                    text.style.fontSize = '14px';
-                                    tooltipEl.appendChild(text);
-                                });
-                            }
-
-                            const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
-
-                            // Display, position, and set styles for font
-                            tooltipEl.style.opacity = 1;
-                            tooltipEl.style.left = positionX + tooltip.caretX + 'px';
-                            tooltipEl.style.top = positionY + tooltip.caretY + 'px';
-                            tooltipEl.style.font = tooltip.options.bodyFont.string;
-                            tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
-                        }
-                    },
                     legend: {
                         display: false
                     }
@@ -673,14 +615,15 @@ export default {
                 }
             };
         },
+
         setLineChartData() {
-            const darkMode = this.$appState.darkTheme;
+            const darkMode = this.isDark();
 
             return {
                 labels: ['31', '1', '2', '3', '4', '5', '6', '7', '8'],
                 datasets: [
                     {
-                        label: 'My First Dataset',
+                        label: 'Product Usage',
                         data: [60, 64, 57, 52, 58, 70, 75, 70, 60],
                         fill: true,
                         borderColor: '#16A34A',
@@ -689,162 +632,26 @@ export default {
                         pointBackgroundColor: '#16A34A',
                         pointBorderColor: darkMode ? '#09090B' : '#FFF',
                         pointBorderWidth: 3,
-
-                        hideInLegendAndTooltip: false,
-                        pointStyle: function (context) {
-                            let index = context.dataIndex;
-
-                            if (index == 6) {
-                                return 'circle';
-                            } else {
-                                return 'line';
-                            }
-                        },
-                        pointRadius: function (context) {
-                            let index = context.dataIndex;
-
-                            if (index == 6) {
-                                return 6;
-                            } else {
-                                return 0.1;
-                            }
-                        },
-                        backgroundColor: (context) => {
-                            const bgColor = ['rgba(22,163,74,0.16)', 'rgba(22,163,74,0)'];
-
-                            if (!context.chart.chartArea) {
-                                return;
-                            }
-
-                            const {
-                                ctx,
-                                data,
-                                chartArea: { top, bottom }
-                            } = context.chart;
-                            const gradientBg = ctx.createLinearGradient(0, top, 0, bottom);
-                            const colorTranches = 1 / (bgColor.length - 1);
-
-                            for (let i = 0; i < bgColor.length; i++) {
-                                gradientBg.addColorStop(0 + i * colorTranches, bgColor[i]);
-                            }
-
-                            return gradientBg;
-                        }
+                        pointRadius: 3
                     }
-                ],
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top'
-                        },
-                        title: {
-                            display: true,
-                            text: 'Chart.js Line Chart'
-                        }
-                    }
-                }
+                ]
             };
         },
+
         setLineChartOptions() {
-            const darkMode = this.$appState.darkTheme;
             const documentStyle = getComputedStyle(document.documentElement);
-
-            const backgroundColor = documentStyle.getPropertyValue('--p-content-background');
-            const textColor = documentStyle.getPropertyValue('--p-text-color');
-            const borderColor = documentStyle.getPropertyValue('--p-content-border-color');
             const textMutedColor = documentStyle.getPropertyValue('--p-text-muted-color');
-
-            const getOrCreateTooltip = (chart) => {
-                let tooltipEl = chart.canvas.parentNode.querySelector('div.chartjs-tooltip');
-
-                if (!tooltipEl) {
-                    tooltipEl = document.createElement('div');
-                    tooltipEl.classList.add('chartjs-tooltip');
-                    tooltipEl.style.backgroundColor = backgroundColor;
-                    tooltipEl.style.boxShadow =
-                        ' 0px 33.12px 9.399px 0px rgba(0, 0, 0, 0.00), 0px 21.036px 8.504px 0px rgba(0, 0, 0, 0.01), 0px 12.084px 7.161px 0px rgba(0, 0, 0, 0.05), 0px 5.371px 5.371px 0px rgba(0, 0, 0, 0.09), 0px 1.343px 2.685px 0px rgba(0, 0, 0, 0.10)';
-                    tooltipEl.style.borderRadius = '7px';
-                    tooltipEl.style.color = textColor;
-                    tooltipEl.style.opacity = 1;
-                    tooltipEl.style.padding = '2px';
-                    tooltipEl.style.pointerEvents = 'none';
-                    tooltipEl.style.position = 'absolute';
-                    tooltipEl.style.transform = 'translate(-50%, 0)';
-                    tooltipEl.style.transition = 'all .2s ease';
-                    chart.canvas.parentNode.appendChild(tooltipEl);
-                }
-
-                return tooltipEl;
-            };
 
             return {
                 maintainAspectRatio: false,
                 aspectRatio: 0.8,
                 plugins: {
-                    chartAreaBorder: {
-                        borderColor: 'red',
-                        borderWidth: 2,
-                        borderDash: [5, 5],
-                        borderDashOffset: 2
-                    },
-                    tooltip: {
-                        enabled: false,
-                        padding: 8,
-                        position: 'nearest',
-                        external: function (context) {
-                            // Tooltip Element
-                            const { chart, tooltip } = context;
-                            const tooltipEl = getOrCreateTooltip(chart);
-
-                            // Hide if no tooltip
-                            if (tooltip.opacity === 0) {
-                                tooltipEl.style.opacity = 0;
-
-                                return;
-                            }
-
-                            if (tooltip.body) {
-                                const bodyLines = tooltip.body.map((b) => {
-                                    const strArr = b.lines[0].split(':');
-                                    const data = {
-                                        text: strArr[0].trim(),
-                                        value: strArr[1].trim()
-                                    };
-
-                                    return data;
-                                });
-
-                                // Clear old content
-                                tooltipEl.innerHTML = '';
-                                bodyLines.forEach((body, i) => {
-                                    const text = document.createElement('div');
-
-                                    text.appendChild(document.createTextNode(body.value + '.000'));
-                                    text.style.fontWeight = '500';
-                                    text.style.lineHeight = '21px';
-                                    text.style.fontSize = '14px';
-                                    tooltipEl.appendChild(text);
-                                });
-                            }
-
-                            const { offsetLeft: positionX, offsetTop: positionY } = chart.canvas;
-
-                            // Display, position, and set styles for font
-                            tooltipEl.style.opacity = 1;
-                            tooltipEl.style.left = positionX + tooltip.caretX + 'px';
-                            tooltipEl.style.top = positionY + tooltip.caretY - 40 + 'px';
-                            tooltipEl.style.font = tooltip.options.bodyFont.string;
-                            tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
-                        }
-                    },
                     legend: {
                         display: false
                     }
                 },
                 scales: {
                     x: {
-                        stacked: true,
                         ticks: {
                             color: textMutedColor
                         },

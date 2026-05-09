@@ -9,10 +9,11 @@ import DialogService from 'primevue/dialogservice';
 import StyleClass from 'primevue/styleclass';
 import Ripple from 'primevue/ripple';
 import Tooltip from 'primevue/tooltip';
+import AnimateOnScroll from 'primevue/animateonscroll';
 import AppTheme from './themes/app-theme';
 import CodeHighlight from './directives/CodeHighlight';
 import DeferredDemo from './components/demo/DeferredDemo.vue';
-import PrimeVueNuxtLink from './components/layout/PrimeVueNuxtLink';
+
 import { routes } from './router';
 import App from './App.vue';
 
@@ -67,7 +68,8 @@ app.directive('code', CodeHighlight);
 app.directive('styleclass', StyleClass);
 app.directive('ripple', Ripple);
 app.directive('tooltip', Tooltip);
+app.directive('animateonscroll', AnimateOnScroll);
+
 app.component('DeferredDemo', DeferredDemo);
-app.component('PrimeVueNuxtLink', PrimeVueNuxtLink);
 
 app.mount('#app');

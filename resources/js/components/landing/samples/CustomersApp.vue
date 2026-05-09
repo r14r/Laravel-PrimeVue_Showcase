@@ -109,8 +109,35 @@
 </template>
 
 <script>
+import Button from 'primevue/button';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
+import InputText from 'primevue/inputtext';
+import Divider from 'primevue/divider';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import OverlayBadge from 'primevue/overlaybadge';
+import Avatar from 'primevue/avatar';
+import Tag from 'primevue/tag';
+import Popover from 'primevue/popover';
+
 export default {
-    name: 'Inbox',
+    name: 'Customers',
+
+    components: {
+        Button,
+        IconField,
+        InputIcon,
+        InputText,
+        Divider,
+        DataTable,
+        Column,
+        OverlayBadge,
+        Avatar,
+        Tag,
+        Popover
+    },
+
     redrawListener: null,
     data() {
         return {
@@ -253,12 +280,18 @@ export default {
             this.hidePopover();
 
             this.$nextTick(() => {
-                this.$refs.op.show(event);
+                if (this.$refs.op) {
+                    this.$refs.op.show(event);
+                }
             });
         },
+
         hidePopover() {
-            this.$refs.op.hide();
+            if (this.$refs.op) {
+                this.$refs.op.hide();
+            }
         }
     }
+
 };
 </script>

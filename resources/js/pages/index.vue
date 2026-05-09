@@ -15,6 +15,8 @@
 </template>
 
 <script>
+import Toast from 'primevue/toast';
+
 import BlockSection from '@/components/landing/BlockSection.vue';
 import FeaturesSection from '@/components/landing/FeaturesSection.vue';
 import FooterSection from '@/components/landing/FooterSection.vue';
@@ -22,6 +24,9 @@ import HeroSection from '@/components/landing/HeroSection.vue';
 import TemplateSection from '@/components/landing/TemplateSection.vue';
 import ThemeSection from '@/components/landing/ThemeSection.vue';
 import UsersSection from '@/components/landing/UsersSection.vue';
+import AppNews from '@/components/layout/AppNews.vue';
+import AppTopBar from '@/components/layout/AppTopBar.vue';
+import AppDesigner from '@/components/layout/AppDesigner.vue';
 
 export default {
     setup() {},
@@ -57,7 +62,11 @@ export default {
         TemplateSection,
         UsersSection,
         FeaturesSection,
-        FooterSection
+        FooterSection,
+        Toast,
+        AppNews,
+        AppTopBar,
+        AppDesigner
     }
 };
 </script>

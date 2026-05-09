@@ -102,34 +102,46 @@
     </div>
 </template>
 
+
 <script>
+import SelectButton from 'primevue/selectbutton';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import OverlayBadge from 'primevue/overlaybadge';
+import Avatar from 'primevue/avatar';
+import Carousel from 'primevue/carousel';
+import ProgressBar from 'primevue/progressbar';
+
 export default {
     name: 'Movies',
-    redrawListener: null,
+
+    components: {
+        SelectButton,
+        IconField,
+        InputIcon,
+        InputText,
+        Button,
+        OverlayBadge,
+        Avatar,
+        Carousel,
+        ProgressBar
+    },
+
     data() {
         return {
             search: '',
             page: 0,
             value: 'Home',
             options: ['Home', 'Movies', 'TV Shows', 'Recently Added', 'My List'],
-            responsiveOptions: [
-                {
-                    breakpoint: '1199px',
-                    numVisible: 3,
-                    numScroll: 1
-                },
 
-                {
-                    breakpoint: '767px',
-                    numVisible: 2,
-                    numScroll: 1
-                },
-                {
-                    breakpoint: '575px',
-                    numVisible: 1,
-                    numScroll: 1
-                }
+            responsiveOptions: [
+                { breakpoint: '1199px', numVisible: 3, numScroll: 1 },
+                { breakpoint: '767px', numVisible: 2, numScroll: 1 },
+                { breakpoint: '575px', numVisible: 1, numScroll: 1 }
             ],
+
             carouselData: [
                 { image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/movie-cover1.png', name: 'Heat', bookmarked: true, point: '4.7', watchedPercent: 80, categories: ['Action', 'Crime', 'Drama'] },
                 { image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/movie-cover2.png', name: 'Batman Begins', bookmarked: false, point: '4.8', watchedPercent: 45, categories: ['Action', 'Crime', 'Drama'] },
@@ -142,6 +154,7 @@ export default {
                 { image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/movie-cover9.png', name: 'Seven', bookmarked: false, point: '4.7', watchedPercent: 20, categories: ['Crime', 'Drama', 'Mystery'] },
                 { image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/movie-cover10.png', name: 'Shutter Island', bookmarked: false, point: '4.7', watchedPercent: 70, categories: ['Mystery', 'Thriller'] }
             ],
+
             popularMovies: [
                 { image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/movie-cover7.png', name: 'Twelve Angry Men', bookmarked: false, point: '4.6', categories: ['Crime', 'Drama'] },
                 { image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/movie-cover8.png', name: 'Saving Private Ryan', bookmarked: true, point: '4.4', categories: ['Drama', 'War'] },
@@ -153,8 +166,6 @@ export default {
                 { image: 'https://www.primefaces.org/cdn/primevue/images/landing/apps/movie-cover14.png', name: 'Kill Bill', bookmarked: true, point: '4.5', categories: ['Action', 'Crime', 'Thriller'] }
             ]
         };
-    },
-    methods: {},
-    components: {}
+    }
 };
 </script>

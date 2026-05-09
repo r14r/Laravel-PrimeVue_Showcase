@@ -1,15 +1,15 @@
 <template>
     <div style="border-radius: 50px" class="overflow-hidden mb-8">
-        <NuxtLink to="/designer" class="block">
+        <RouterLink to="/designer" class="block">
             <img alt="PrimeVue Designer" :src="coverImage" class="w-full" />
-        </NuxtLink>
+        </RouterLink>
     </div>
 
     <div class="text-lg font-semibold mb-2">Authenticate</div>
     <div v-if="!$appState.designer.verified">
         <span class="block leading-6 mb-4"
-            >Theme Designer is the ultimate tool to customize and design your own themes featuring a visual editor, figma to theme code, cloud storage, and migration assistant. <NuxtLink to="/designer" class="doc-link">Discover</NuxtLink> more about
-            the Theme Designer by visiting the detailed <NuxtLink to="/designer/guide" class="doc-link">documentation</NuxtLink>.</span
+            >Theme Designer is the ultimate tool to customize and design your own themes featuring a visual editor, figma to theme code, cloud storage, and migration assistant. <RouterLink to="/designer" class="doc-link">Discover</RouterLink> more about
+            the Theme Designer by visiting the detailed <RouterLink to="/designer/guide" class="doc-link">documentation</RouterLink>.</span
         >
         <span class="block leading-6 mb-4"
             >A license can be purchased from <a href="https://primeui.store/designer" class="doc-link" rel="noopener noreferrer">PrimeStore</a>, if you do not have a license key, you are still able to experience the Designer in trial mode. Note that
@@ -85,14 +85,13 @@
 <script>
 import { usePreset } from '@primeuix/themes';
 import Aura from '@primeuix/themes/aura';
+import Menu from 'primevue/menu';
 
 export default {
     scrollListener: null,
     setup() {
-        const runtimeConfig = useRuntimeConfig();
-
         return {
-            designerApiUrl: runtimeConfig.public.designerApiUrl
+            designerApiUrl: import.meta.env.VITE_DESIGNER_API_URL || '/api/designer'
         };
     },
     inject: ['designerService'],
@@ -152,7 +151,7 @@ export default {
     },
     methods: {
         async activate() {
-            const { data, error } = await $fetch(this.designerApiUrl + '/license/signin/' + this.licenseKey, {
+            const { data, error } = await fetch(this.designerApiUrl + '/license/signin/' + this.licenseKey, {
                 credentials: 'include',
                 query: {
                     passkey: this.otp
@@ -177,7 +176,7 @@ export default {
             }
         },
         async signOut() {
-            const { data } = await $fetch(this.designerApiUrl + '/license/signout/', {
+            const { data } = await fetch(this.designerApiUrl + '/license/signout/', {
                 credentials: 'include'
             });
 
@@ -213,7 +212,7 @@ export default {
         },
         async loadThemes() {
             this.loading = true;
-            const { data, error } = await $fetch(this.designerApiUrl + '/theme/list/', {
+            const { data, error } = await fetch(this.designerApiUrl + '/theme/list/', {
                 credentials: 'include',
                 headers: {
                     'X-CSRF-Token': this.$appState.designer.csrfToken
@@ -229,7 +228,7 @@ export default {
             this.loading = false;
         },
         async loadTheme(theme) {
-            const { data, error } = await $fetch(this.designerApiUrl + '/theme/load/' + theme.t_key, {
+            const { data, error } = await fetch(this.designerApiUrl + '/theme/load/' + theme.t_key, {
                 credentials: 'include',
                 headers: {
                     'X-CSRF-Token': this.$appState.designer.csrfToken
@@ -246,7 +245,7 @@ export default {
         },
         async renameTheme(theme) {
             if (theme.t_name && theme.t_name.trim().length && theme.t_origin === 'web') {
-                const { error } = await $fetch(this.designerApiUrl + '/theme/rename/' + theme.t_key, {
+                const { error } = await fetch(this.designerApiUrl + '/theme/rename/' + theme.t_key, {
                     method: 'PATCH',
                     credentials: 'include',
                     headers: {
@@ -270,7 +269,7 @@ export default {
             event.stopPropagation();
         },
         async deleteTheme(theme) {
-            const { error } = await $fetch(this.designerApiUrl + '/theme/delete/' + theme.t_key, {
+            const { error } = await fetch(this.designerApiUrl + '/theme/delete/' + theme.t_key, {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {
@@ -285,7 +284,7 @@ export default {
             }
         },
         async duplicateTheme(theme) {
-            const { error } = await $fetch(this.designerApiUrl + '/theme/duplicate/' + theme.t_key, {
+            const { error } = await fetch(this.designerApiUrl + '/theme/duplicate/' + theme.t_key, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -352,6 +351,9 @@ export default {
         coverImage() {
             return this.$appState.darkTheme ? 'https://fqjltiegiezfetthbags.supabase.co/storage/v1/object/public/common.images/designer/editor-intro-dark.png' : 'https://fqjltiegiezfetthbags.supabase.co/storage/v1/object/public/common.images/designer/editor-intro.png';
         }
+    },
+    components: {
+        Menu
     }
 };
 </script>

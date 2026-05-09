@@ -1,15 +1,47 @@
 <template>
-    <div v-if="$appState.newsActive" class="layout-news" :style="$appState.announcement.backgroundStyle">
+    <div
+        v-if="$appState.newsActive"
+        class="layout-news"
+        :style="$appState.announcement.backgroundStyle"
+    >
         <div class="layout-news-container">
             <i></i>
+
             <div class="layout-news-content">
-                <span class="layout-news-text" :style="$appState.announcement.textStyle">{{ $appState.announcement.content }}</span>
-                <a v-if="$appState.announcement.linkHref" class="layout-news-link" :href="$appState.announcement.linkHref" :target="$appState.announcement.target" rel="noopener noreferrer">{{ $appState.announcement.linkText }}</a>
-                <NuxtLink v-if="$appState.announcement.to" :to="$appState.announcement.to" class="layout-news-link">{{ $appState.announcement.linkText }}</NuxtLink>
+                <span
+                    class="layout-news-text"
+                    :style="$appState.announcement.textStyle"
+                >
+                    {{ $appState.announcement.content }}
+                </span>
+
+                <a
+                    v-if="$appState.announcement.linkHref"
+                    class="layout-news-link"
+                    :href="$appState.announcement.linkHref"
+                    :target="$appState.announcement.target"
+                    rel="noopener noreferrer"
+                >
+                    {{ $appState.announcement.linkText }}
+                </a>
+
+                <RouterLink
+                    v-if="$appState.announcement.to"
+                    :to="$appState.announcement.to"
+                    class="layout-news-link"
+                >
+                    {{ $appState.announcement.linkText }}
+                </RouterLink>
             </div>
-            <a class="layout-news-close" :style="$appState.announcement.textStyle" @click="onClose">
+
+            <button
+                type="button"
+                class="layout-news-close"
+                :style="$appState.announcement.textStyle"
+                @click="onClose"
+            >
                 <span class="pi pi-times"></span>
-            </a>
+            </button>
         </div>
     </div>
 </template>
@@ -18,6 +50,8 @@
 import News from '@/assets/data/news.json';
 
 export default {
+    name: 'AppNews',
+
     mounted() {
         const itemString = localStorage.getItem(this.$appState.storageKey);
 
@@ -35,14 +69,19 @@ export default {
             this.$appState.newsActive = true;
         }
     },
+
     methods: {
         onClose() {
             this.$appState.newsActive = false;
+
             const item = {
                 hiddenNews: this.$appState.announcement.id
             };
 
-            localStorage.setItem(this.$appState.storageKey, JSON.stringify(item));
+            localStorage.setItem(
+                this.$appState.storageKey,
+                JSON.stringify(item)
+            );
         }
     }
 };

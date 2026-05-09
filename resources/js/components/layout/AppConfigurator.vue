@@ -59,6 +59,9 @@ import Lara from '@primeuix/themes/lara';
 import Material from '@primeuix/themes/material';
 import Nora from '@primeuix/themes/nora';
 
+import SelectButton from 'primevue/selectbutton';
+import ToggleSwitch from 'primevue/toggleswitch';
+
 const presets = {
     Aura,
     Material,
@@ -67,6 +70,10 @@ const presets = {
 };
 
 export default {
+    components: {
+        SelectButton,
+        ToggleSwitch   
+    },
     data() {
         return {
             presetOptions: [
